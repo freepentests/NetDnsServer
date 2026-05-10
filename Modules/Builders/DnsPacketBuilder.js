@@ -1,5 +1,8 @@
 // i luv the builder pattern so much
 
+import DnsPacketQuestionBuilder from './DnsPacketQuestionBuilder.js';
+import DnsPacketAnswerBuilder from './DnsPacketAnswerBuilder.js';
+
 export default class DnsPacketBuilder {
 	#DNS_HEADER_SIZE_BYTES = 12;
 
@@ -12,10 +15,22 @@ export default class DnsPacketBuilder {
 		this.recursionDesired = null;
 		this.recursionAvailable = null;
 		this.responseCode = null;
-		this.questionCount = null;
-		this.answerCount = null;
-		this.authorityRecordCount = null;
-		this.additionalRecordCount = null;
+		this.questionCount = 0;
+		this.answerCount = 0;
+		this.authorityRecordCount = 0;
+		this.additionalRecordCount = 0;
+
+		this.questions = [];
+		this.answers = [];
+	}
+
+	addQuestion(questionBuilderCallback) {
+		const question = new DnsPacketQuestionBuilder();
+		questionBuilderCallback(question); // the caller will have to use the DnsPacketQuestionBuilder to construct the question
+
+		this.questionCount++;
+
+		return this;
 	}
 
 	setPacketId(value) {
@@ -59,11 +74,13 @@ export default class DnsPacketBuilder {
 	}
 
 	setQuestionCount(value) {
+		// it is recommended not to use the setQuestionCount setter because the addQuestion method automatically increments questionCount
 		this.questionCount = value;
 		return this;
 	}
 
 	setAnswerCount(value) {
+		// it is recommended not to use the setAnswerCount setter because the addAnswer method automatically increments answerCount
 		this.answerCount = value;
 		return this;
 	}
@@ -82,12 +99,10 @@ export default class DnsPacketBuilder {
 		const buffer = new ArrayBuffer(this.#DNS_HEADER_SIZE_BYTES);
 		const view = new DataView(buffer);
 
-		// the flags are supposed to be a section of 2 bytes instad of
-
 		let flags = 0;
 
 		if (this.isResponse) {
-			flags = flags | 1 << 15; // leftmost bit specifies whether it's a response 
+			flags = flags | 1 << 15; // leftmost bit specifies whether it's a response or a query
 		}
 
 		if (this.opcode) {
@@ -99,7 +114,7 @@ export default class DnsPacketBuilder {
 		}
 
 		if (this.isTruncated) {
-			flags = flags | 1 << 9; // second rightmost bit specifies whether
+			flags = flags | 1 << 9; // second rightmost bit specifies whether the shit is truncated
 		}
 
 		if (this.recursionDesired) {
