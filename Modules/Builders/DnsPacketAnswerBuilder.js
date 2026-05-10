@@ -4,20 +4,20 @@
 export default class DnsPacketAnswerBuilder {
 	constructor() {
 		this.domainName = null; // QNAME
-		this.type = null;
+		this.domainType = null;
 		this.class = 1;
 		this.TTL = null;
 		this.length = null;
 		this.data = null;
 	}
 
-	setName(value) {
+	setDomainName(value) {
 		this.domainName = value;
 		return this;
 	}
 
 	setRecordType(value) {
-		this.type = value;
+		this.recordType = value;
 		return this;
 	}
 
@@ -70,7 +70,7 @@ export default class DnsPacketAnswerBuilder {
 
 		const answerBuffer = answerByteArray.buffer;
 		const answerBufferView = new DataView(answerBuffer);
-		answerBufferView.setUint16(offset, this.type);
+		answerBufferView.setUint16(offset, this.recordType);
 		answerBufferView.setUint16(offset + 2, this.class);
 		answerBufferView.setUint32(offset + 4, this.TTL);
 		answerBufferView.setUint16(offset + 8, this.length);

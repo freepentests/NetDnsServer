@@ -28,6 +28,8 @@ export default class DnsPacketBuilder {
 		const question = new DnsPacketQuestionBuilder();
 		questionBuilderCallback(question); // the caller will have to use the DnsPacketQuestionBuilder to construct the question
 
+		if (!question.domainName) return this;
+
 		this.questions.push(question);
 		this.questionCount++;
 
@@ -37,6 +39,8 @@ export default class DnsPacketBuilder {
 	addAnswer(answerBuilderCallback) {
 		const answer = new DnsPacketAnswerBuilder();
 		answerBuilderCallback(answer); // the caller will have to use the DnsPacketAnswerBuilder to construct the answer
+
+		if (!answer.domainName) return this;
 
 		this.answers.push(answer);
 		this.answerCount++;
@@ -164,7 +168,7 @@ export default class DnsPacketBuilder {
 
 	serialize() {
 		let buffer = new Uint8Array(this.#serializeHeader());
-		
+
 		this.questions.forEach(question => {
 			buffer = new Uint8Array([...buffer, ...new Uint8Array(question.serialize())]);
 		});

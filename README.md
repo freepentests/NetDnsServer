@@ -23,7 +23,11 @@ To use this DNS server, follow these steps in order:
 }
 ```
 
-4. Update your system's settings to use the custom DNS server. On GNU/Linux (and probably BSD and MacOS too) you can do this by editing `/etc/resolv.conf`. On Windows, you'll have to figure it out yourself, because I've not used that spyware in years so I'm not familiar with it.
+> for A records, RDATA can just be an IPv4 address in the form of `octet.octet.octet.octet`, but for any other type of record, RDATA must be some base64-encoded binary data
 
-5. Once you've done all that, visit a site and it will probably work if you've done everything correctly.
+4. Run the program (if you're on GNU/Linux you will need root privileges since this binds to port `53`, which is usually a restricted port)
+
+5. Update your system's settings to use the custom DNS server. On GNU/Linux (and probably BSD and MacOS too) you can do this by editing `/etc/resolv.conf`. On Windows, you'll have to figure it out yourself, because I've not used that spyware in years so I'm not familiar with it.
+
+6. Once you've done all that, visit a site and it will probably work if you've done everything correctly.
 
