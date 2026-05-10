@@ -32,19 +32,23 @@ export default class DnsPacketQuestionBuilder {
 
 		byteArray = new Uint8Array([...byteArray, 0]); // null terminate the shit
 
-		return byteArray.buffer;
+		return byteArray;
 	}
 
 	serialize() {
-		const domainNameBuffer = this.#serializeDomainName();
-		const offset = domainNameBuffer.byteLength;
+		const domainNameByteArray = this.#serializeDomainName();
+		const offset = domainNameByteArray.byteLength;
 
-		const buffer = domainNameBuffer.transfer(domainNameBufferLength + 4);
+		const questionByteArray = new Uint8Array(offset + 4);
+		questionByteArray.set(domainNameByteArray);
 
-		buffer.setUint16(domainNameBufferLength, this.recordType);
-		buffer.setUint16(domainNameBufferLength + 2, this.class);
+		const questionBuffer = questionByteArray.buffer;
+		const view = new DataView(questionBuffer);
 
-		return buffer;
+		view.setUint16(offset, this.recordType);
+		view.setUint16(offset + 2, this.class);
+
+		return questionBuffer;
 	}
 }
 
