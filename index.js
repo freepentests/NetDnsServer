@@ -14,9 +14,9 @@ server.on('message', (msg, rinfo) => {
 	const parsedPacket = new DnsPacketParser().parse(msg.buffer);
 	console.log(parsedPacket);
 
-	server.send(packet, rinfo.port, rinfo.address, (err) => {
-		console.log(err);
-	});
+	//server.send(packet, rinfo.port, rinfo.address, (err) => {
+		//console.log(err);
+	//});
 });
 
 server.bind(53, '127.0.0.1');

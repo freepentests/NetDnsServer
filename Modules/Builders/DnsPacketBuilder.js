@@ -60,7 +60,7 @@ export default class DnsPacketBuilder {
 	}
 
 	setIsResponse(value) {
-		this.isResponse = value;
+		this.isResponse = Boolean(value);
 		return this;
 	}
 
@@ -70,22 +70,22 @@ export default class DnsPacketBuilder {
 	}
 
 	setIsAuthoritativeAnswer(value) {
-		this.isAuthoritativeAnswer = value;
+		this.isAuthoritativeAnswer = Boolean(value);
 		return this;
 	}
 
 	setIsTruncated(value) {
-		this.isTruncated = value;
+		this.isTruncated = Boolean(value);
 		return this;
 	}
 
 	setRecursionDesired(value) {
-		this.recursionDesired = value;
+		this.recursionDesired = Boolean(value);
 		return this;
 	}
 
 	setRecursionAvailable(value) {
-		this.recursionAvailable = value;
+		this.recursionAvailable = Boolean(value);
 		return this;
 	}
 

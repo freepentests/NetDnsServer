@@ -55,9 +55,16 @@ export default class DnsPacketParser {
 			.setAnswerCount(answerCount)
 			.setAuthorityRecordCount(authorityRecordCount)
 			.setAdditionalRecordCount(additionalRecordCount)
-			.setQuestions(questions);
+			.setQuestions(questions)
+			.setIsResponse(flags & 1 << 15)
+			.setIsAuthoritativeAnswer(flags & 1 << 10)
+			.setIsTruncated(flags & 1 << 9)
+			.setRecursionDesired(flags & 1 << 8)
+			.setRecursionAvailable(flags & 1 << 7)
+			.setResponseCode(flags & 0b1111)
+			.setOpcode((flags & 0b1111 << 11) >> 11);
 
-		return parsedPacket
+		return parsedPacket;
 	}
 }
 
