@@ -44,6 +44,16 @@ export default class DnsPacketBuilder {
 		return this;
 	}
 
+	setQuestions(object) {
+		this.questions = object;
+		return this;
+	}
+
+	setAnswers(object) {
+		this.answers = object;
+		return this;
+	}
+
 	setPacketId(value) {
 		this.packetId = value;
 		return this;
