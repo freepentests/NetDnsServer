@@ -34,6 +34,16 @@ export default class DnsPacketBuilder {
 		return this;
 	}
 
+	addAnswer(answerBuilderCallback) {
+		const answer = new DnsPacketAnswerBuilder();
+		answerBuilderCallback(answer); // the caller will have to use the DnsPacketAnswerBuilder to construct the answer
+
+		this.answers.push(answer);
+		this.answerCount++;
+
+		return this;
+	}
+
 	setPacketId(value) {
 		this.packetId = value;
 		return this;
