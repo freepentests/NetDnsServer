@@ -16,7 +16,7 @@ export default class DnsPacketAnswerBuilder {
 		return this;
 	}
 
-	setType(value) {
+	setRecordType(value) {
 		this.type = value;
 		return this;
 	}
@@ -66,13 +66,14 @@ export default class DnsPacketAnswerBuilder {
 
 		const answerByteArray = new Uint8Array(offset + 10 + this.length);
 		answerByteArray.set(domainNameByteArray);
-		answerByteArray.set(new Uint8Array(this.data), 10);
+		answerByteArray.set(new Uint8Array(this.data), offset + 10);
 
 		const answerBuffer = answerByteArray.buffer;
-		answerBuffer.setUint16(offset, this.type);
-		answerBuffer.setUint16(offset + 2, this.class);
-		answerBuffer.setUint16(offset + 4, this.TTL);
-		answerBuffer.setUint16(offset + 8, this.length);
+		const answerBufferView = new DataView(answerBuffer);
+		answerBufferView.setUint16(offset, this.type);
+		answerBufferView.setUint16(offset + 2, this.class);
+		answerBufferView.setUint32(offset + 4, this.TTL);
+		answerBufferView.setUint16(offset + 8, this.length);
 
 		return answerBuffer;
 	}

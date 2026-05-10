@@ -159,6 +159,10 @@ export default class DnsPacketBuilder {
 			buffer = new Uint8Array([...buffer, ...new Uint8Array(question.serialize())]);
 		});
 
+		this.answers.forEach(answer => {
+			buffer = new Uint8Array([...buffer, ...new Uint8Array(answer.serialize())]);
+		});
+
 		return buffer;
 	}
 }
